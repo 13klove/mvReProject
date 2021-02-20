@@ -12,6 +12,14 @@
     <artifactId>util</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
+    <!--KOMORAN의 리파지토리 변경으로 추가-->
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>com.github.shin285</groupId>
