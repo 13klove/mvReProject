@@ -19,7 +19,7 @@ public class NvSearchMovieParserTest {
         CrwVo vo = CrwVo.builder().build();
         NvSearchMovieParser nvSearchMovieParser = new NvSearchMovieParser(closeableHttpClient);
         nvSearchMovieParser.read(vo);
-        System.out.printf((String) vo.getOutput());
+        System.out.printf(vo.getOutput().toString());
     }
 
 }
