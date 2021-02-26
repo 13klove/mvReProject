@@ -15,6 +15,8 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Data
 public class DuMovieDetailParser implements CrwParser {
@@ -48,16 +50,18 @@ public class DuMovieDetailParser implements CrwParser {
         Map<String, Object> movie = Maps.newHashMap();
         doc.getElementsByClass("box_basic").stream().forEach(a->{
             movie.put("title", a.getElementsByClass("detail_tit_fixed").text());
-            movie.put("banner", a.getElementsByAttribute("style").attr("style"));
+            movie.put("titleEn", a.select(".head_origin > .txt_name").text());
+            movie.put("banner", getUrl(a.getElementsByAttribute("style").attr("style")));
 
             a.getElementsByClass("list_cont").stream().forEach(b->{
                 if(b.getElementsByTag("dt").text().equals("등급")) {
                     String level = b.getElementsByTag("dd").text().replaceAll("[^0-9]", "");
                     movie.put("level", level.equals("")?"0":level);
                 }
+
+                if(b.getElementsByTag("dt").text().equals("국가")) { movie.put("country", b.getElementsByTag("dd").text().split(", ")); }
                 if(b.getElementsByTag("dt").text().equals("개봉")) movie.put("openDate", b.getElementsByTag("dd").text().replaceAll("[^0-9]", ""));
-                if(b.getElementsByTag("dt").text().equals("장르")) movie.put("genre", b.getElementsByTag("dd").text());
-                if(b.getElementsByTag("dt").text().equals("국가")) movie.put("country", b.getElementsByTag("dd").text());
+                if(b.getElementsByTag("dt").text().equals("장르")) movie.put("genre", b.getElementsByTag("dd").text().split("/"));
                 if(b.getElementsByTag("dt").text().equals("러닝타임")) movie.put("runtime", b.getElementsByTag("dd").text().replaceAll("[^0-9]", ""));
                 if(b.getElementsByTag("dt").text().equals("평점")) movie.put("point", b.getElementsByTag("dd").text());
                 if(b.getElementsByTag("dt").text().equals("누적관객")) movie.put("count", b.getElementsByTag("dd").text().replaceAll("[^0-9]", ""));
@@ -81,6 +85,16 @@ public class DuMovieDetailParser implements CrwParser {
         Document storyDoc = Jsoup.parse(split[0]);
         movie.put("story", storyDoc.text());
         vo.setOutput(movie);
+    }
+
+    private String getUrl(String url) {
+        String REGEX = "\\b(https?|http)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+        Pattern p = Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(url);
+        if (m.find()) {
+            return m.group();
+        }
+        return null;
     }
 
 }

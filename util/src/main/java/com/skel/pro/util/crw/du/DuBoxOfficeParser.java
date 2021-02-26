@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.skel.pro.util.crw.CrwParser;
 import com.skel.pro.util.crw.CrwVo;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Data
+@Slf4j
 public class DuBoxOfficeParser implements CrwParser {
 
     private final CloseableHttpClient client;

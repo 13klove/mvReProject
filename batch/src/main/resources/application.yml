@@ -1,0 +1,41 @@
+spring:
+  batch:
+    job:
+      names: ${job.name:NONE}
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+        default_batch_fetch_size: 1000
+
+  datasource:
+#    hikari:
+#      jdbc-url: jdbc:mysql://localhost:3306/movierecommand?serverTimezone=UTC
+#      username: root
+#      password: jhb254
+#      driver-class-name: com.mysql.jdbc.Driver
+#    datasource:
+#    url: jdbc:h2:tcp://localhost/~/movieRePro;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#    username: sa
+#    password:
+#    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/movierecommand?serverTimezone=UTC&rewriteBatchedStatements=true
+    username: root
+    password: jhb254
+    driver-class-name: com.mysql.jdbc.Driver
+
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: default
+
+  main:
+    allow-bean-definition-overriding: true
+
+logging.level:
+  org.hibernate.SQL: debug

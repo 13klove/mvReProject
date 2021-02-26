@@ -1,13 +1,13 @@
 package com.skel.pro.batch;
 
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import static org.springframework.boot.SpringApplication.*;
+
+import static org.springframework.boot.SpringApplication.run;
 
 
-@SpringBootApplication
 @EnableBatchProcessing
+@SpringBootApplication
 public class BatchApplication {
 
     public static void main(String[] args) { run(BatchApplication.class, args); }

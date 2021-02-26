@@ -3,6 +3,7 @@ package com.skel.pro.util.crw.du;
 import com.skel.pro.util.crw.CrwParser;
 import com.skel.pro.util.crw.CrwVo;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -13,6 +14,7 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 
 @Data
+@Slf4j
 public class DuMovieSearchParser implements CrwParser {
 
     private final CloseableHttpClient client;
@@ -21,7 +23,7 @@ public class DuMovieSearchParser implements CrwParser {
     @Override
     public void read(CrwVo vo) throws IOException {
         String kwd = (String) vo.getInput();
-        HttpGet httpGet = new HttpGet(host+kwd);
+        HttpGet httpGet = new HttpGet(host+kwd.replaceAll(" ", ""));
         httpGet.setHeader(":authority", "search.daum.net");
         httpGet.setHeader(":method", "GET");
         httpGet.setHeader(":scheme", "https");
@@ -41,8 +43,12 @@ public class DuMovieSearchParser implements CrwParser {
         String text = EntityUtils.toString(execute.getEntity());
 
         Document doc = Jsoup.parse(text);
-        String detailLink = doc.getElementById("movieTitle").getElementsByTag("a").attr("href");
-        vo.setOutput(detailLink);
+        try{
+            String detailLink = doc.getElementById("movieTitle").getElementsByTag("a").attr("href");
+            vo.setOutput(detailLink);
+        }catch (NullPointerException e){
+            log.warn("{} 영화는 검색 url이 없습니다.", kwd);
+        }
     }
 
 }

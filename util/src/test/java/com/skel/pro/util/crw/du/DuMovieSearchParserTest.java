@@ -17,7 +17,8 @@ public class DuMovieSearchParserTest {
     public void DuMovieSearchParserReadTest() throws IOException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
         CloseableHttpClient closeableHttpClient = HttpClientFactory.httpClient(10, 3000);
 
-        CrwVo vo = CrwVo.builder().input("미션임파서블").build();
+        //CrwVo vo = CrwVo.builder().input("어느 가족, 호랑이는 겁이 없지").build();
+        CrwVo vo = CrwVo.builder().input("어느가족,호랑이는겁이없지").build();
         DuMovieSearchParser nvSearchMovieParser = new DuMovieSearchParser(closeableHttpClient);
         nvSearchMovieParser.read(vo);
 

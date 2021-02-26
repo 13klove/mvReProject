@@ -1,15 +1,16 @@
-package com.skel.pro.util.crw.config;
+package com.skel.pro.batch.config;
 
 
+import com.skel.pro.util.crw.config.HttpClientFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 
-@Component
+@Configuration
 public class CrwConfig {
 
     @Bean(name="redirectHttpClient")
