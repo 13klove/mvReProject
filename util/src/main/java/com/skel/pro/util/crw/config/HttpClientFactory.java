@@ -1,6 +1,7 @@
 package com.skel.pro.util.crw.config;
 
 import lombok.Data;
+import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -50,6 +51,7 @@ public class HttpClientFactory {
                 .setConnectTimeout(maxTimeOut)//서버에 소켓 연결 타임 아웃
                 .setConnectionRequestTimeout(maxTimeOut)//커넥션 풀에서 꺼내올 때의 타임 아웃
                 .setRedirectsEnabled(true)//크롤링한 서버가 리다이렉트를 하면 에러 처리
+                .setCookieSpec(CookieSpecs.IGNORE_COOKIES)//쿠키값 관련 무시한다. 이거는 선택 다음 파서에서 쿠키관련 warm이 싫어서 한다.
                 .setSocketTimeout(maxTimeOut).build();//요청/응답간의 타임 아웃
 
         SocketConfig sc = SocketConfig.custom()

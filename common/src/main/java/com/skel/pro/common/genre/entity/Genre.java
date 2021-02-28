@@ -32,6 +32,8 @@ public class Genre {
         this.genre = genreCodeDiv.getGenreCode(genre);
     }
 
-    //public static createGenere
+    public void addMovieGenre(MovieGenre movieGenre){
+        movieGenres.add(movieGenre);
+    }
 
 }

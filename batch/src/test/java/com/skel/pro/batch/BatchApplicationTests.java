@@ -8,8 +8,9 @@ import com.skel.pro.util.crw.config.HttpClientFactory;
 import com.skel.pro.util.crw.du.DuMovieDetailParser;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -19,7 +20,8 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class BatchApplicationTest {
+@SpringBootTest
+public class BatchApplicationTests {
 
     @Test
     public void test() throws IOException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {

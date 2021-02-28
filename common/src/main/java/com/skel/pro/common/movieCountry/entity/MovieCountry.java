@@ -20,7 +20,7 @@ public class MovieCountry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long movieCountryId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "movie_id")
     private Movie movie;
 

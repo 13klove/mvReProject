@@ -5,6 +5,8 @@ import com.google.common.collect.Sets;
 import com.skel.pro.batch.movieDetailDataJob.dto.Actor;
 import com.skel.pro.batch.movieDetailDataJob.service.MovieDetailLinkService;
 import com.skel.pro.batch.movieDetailDataJob.service.MovieDetailService;
+import com.skel.pro.common.country.status.CountryCodeDiv;
+import com.skel.pro.common.genre.status.GenreCodeDiv;
 import com.skel.pro.util.crw.CrwVo;
 import com.skel.pro.util.crw.nv.NvMoviesParser;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +52,16 @@ public class MovieDetailDataTask implements Tasklet {
         for(String movieName : movieNm){
             detailLinks.add(multiThPool.submit(new MovieDetailLinkService(movieName, client)).get());
         }
+        detailLinks = detailLinks.stream().filter(a->a!=null).distinct().collect(Collectors.toList());
+
         log.info("상세 url: {}", detailLinks.size());
+        jdbcTemplate.batchUpdate("INSERT INTO temp_detail_link (idtemp_detail_link) VALUES (?)", detailLinks, BATCH_SIZE, new ParameterizedPreparedStatementSetter<String>() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement, String s) throws SQLException {
+                preparedStatement.setString(1, s.replaceAll("http", "https"));
+            }
+        });
+        log.info("상세 url 저장 완료 총: {}건", detailLinks.size());
 
         List<Map<String, Object>> detailDatas = Lists.newArrayList();
         for(String url : detailLinks){
@@ -76,17 +87,19 @@ public class MovieDetailDataTask implements Tasklet {
             }
         }
 
+        GenreCodeDiv genreCodeDiv = new GenreCodeDiv();
         jdbcTemplate.batchUpdate("INSERT INTO genre(genre) VALUES (?)", genres, BATCH_SIZE, new ParameterizedPreparedStatementSetter<String>(){
             @Override
             public void setValues(PreparedStatement preparedStatement, String s) throws SQLException {
-                preparedStatement.setString(1, s);
+                preparedStatement.setString(1, genreCodeDiv.getGenreCode(s).toString());
             }
         });
 
+        CountryCodeDiv countryCodeDiv = new CountryCodeDiv();
         jdbcTemplate.batchUpdate("INSERT INTO country(`country`) VALUES (?)", country, BATCH_SIZE, new ParameterizedPreparedStatementSetter<String>() {
             @Override
             public void setValues(PreparedStatement preparedStatement, String s) throws SQLException {
-                preparedStatement.setString(1, s);
+                preparedStatement.setString(1, countryCodeDiv.getCountryCode(s).toString());
             }
         });
 

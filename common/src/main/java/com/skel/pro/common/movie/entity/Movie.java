@@ -56,6 +56,7 @@ public class Movie {
 
     private String story;
 
+    @Enumerated(EnumType.STRING)
     private MovieStatus movieStatus;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
@@ -81,9 +82,9 @@ public class Movie {
         this.level = selectLevel(level);
         this.bannerImg = bannerImg;
         this.runtime = runtime;
-        this.openDate = LocalDate.parse(openDate, DateTimeFormatter.BASIC_ISO_DATE);
+        this.openDate = openDate==null?null:openDate.length()!=8?LocalDate.parse(openDate+"01", DateTimeFormatter.BASIC_ISO_DATE):LocalDate.parse(openDate, DateTimeFormatter.BASIC_ISO_DATE);
         this.point = point;
-        this.count = count;
+        this.count = count==null?0:count;
         this.award = award;
         this.story = story;
         this.movieStatus = movieStatus;
@@ -94,6 +95,8 @@ public class Movie {
     }
 
     public Level selectLevel(String level){
+        if(level==null) return Level.LV0;
+
         if(level.equals(Level.Lv1.getCode())) return Level.Lv1;
         else if(level.equals(Level.Lv2.getCode())) return Level.Lv2;
         else if(level.equals(Level.Lv3.getCode())) return Level.Lv3;
@@ -103,5 +106,9 @@ public class Movie {
     public void addMovieCountries(MovieCountry movieCountry){
         movieCountries.add(movieCountry);
     }
+
+    public void addMovieGenre(MovieGenre movieGenre) { movieGenres.add(movieGenre); }
+
+    public void addMovieActor(MovieActor movieActor) {movieActors.add(movieActor);}
 
 }

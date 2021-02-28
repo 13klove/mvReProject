@@ -33,7 +33,7 @@ public class NvMoviesParser implements CrwParser {
     public void read(CrwVo vo) throws IOException {
         Set<String> movieName = Sets.newHashSet();
         //int size = 21949/25;
-        int size = 100;
+        int size = 200;
         for(int i=1; i<size; i++) {
             HttpGet httpGet = new HttpGet(host+i);
 
